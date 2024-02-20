@@ -59,7 +59,7 @@ static void MX_USART3_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint16_t adcRaw[2] = {0};
 /* USER CODE END 0 */
 
 /**
@@ -101,7 +101,24 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  HAL_ADC_Start(&hadc);
 
+	  HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+	  adcRaw[0] = HAL_ADC_GetValue(&hadc);
+	  HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+	  adcRaw[1] = HAL_ADC_GetValue(&hadc);
+
+	  uint8_t sendByte = 0;
+
+	  sendByte = ( (float)adcRaw[0] / 4096.0 )*100;
+	  HAL_UART_Transmit(&huart3, &sendByte, 1, HAL_MAX_DELAY);
+
+	  HAL_Delay(500);
+
+	  sendByte = ( (float)adcRaw[1] / 4096.0 )*100+100;
+	  HAL_UART_Transmit(&huart3, &sendByte, 1, HAL_MAX_DELAY);
+
+	  HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -124,10 +141,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.HSI14CalibrationValue = 16;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
-  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -137,7 +151,7 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
@@ -188,7 +202,7 @@ static void MX_ADC_Init(void)
 
   /** Configure for the selected ADC regular channel to be converted.
   */
-  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Channel = ADC_CHANNEL_5;
   sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
   sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)

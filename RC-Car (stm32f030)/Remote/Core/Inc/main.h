@@ -57,10 +57,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define SPEED_IN_Pin GPIO_PIN_6
-#define SPEED_IN_GPIO_Port GPIOA
-#define STEERING_IN_Pin GPIO_PIN_7
-#define STEERING_IN_GPIO_Port GPIOA
 #define LORA_TX_Pin GPIO_PIN_10
 #define LORA_TX_GPIO_Port GPIOB
 #define LORA_RX_Pin GPIO_PIN_11

@@ -60,8 +60,8 @@ all: main-build
 main-build: basic_pwm.elf secondary-outputs
 
 # Tool invocations
-basic_pwm.elf basic_pwm.map: $(OBJS) $(USER_OBJS) D:\Andrea\Embedded\Repositories\RC-Car\ (stm32f030)\basic_pwm\STM32F030CCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "basic_pwm.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\Andrea\Embedded\Repositories\RC-Car (stm32f030)\basic_pwm\STM32F030CCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="basic_pwm.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+basic_pwm.elf basic_pwm.map: $(OBJS) $(USER_OBJS) D:\Andrea\Embedded\Repositories\RC-Car\RC-Car\ (stm32f030)\basic_pwm\STM32F030CCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "basic_pwm.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\Andrea\Embedded\Repositories\RC-Car\RC-Car (stm32f030)\basic_pwm\STM32F030CCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="basic_pwm.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
