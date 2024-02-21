@@ -92,6 +92,9 @@ void remote_process(void)
 		// Time not yet elapsed
 		return;
 
+	// Timer reset
+	remote.send_timeStamp = getTimeMs();
+
 	// 5. Time elapsed; send the data packet
 
 	// Save energy; if in stop I don't send data (no problem in case of missing data; missed send will considered a STOP condition also)
