@@ -9,6 +9,7 @@
 #include "remote.h"
 #include "user_sysfunc.h"
 
+
 /* Private function prototypes */
 uint16_t getSingleVal(void);
 /*******************************/
@@ -26,6 +27,7 @@ void remote_init(void)
 	remote.send_timeStamp = getTimeMs();	 // Timer reset
 	remote.data = 0; 						 // Data reset
 	remote.send = SEND_OK; 					 // Default value
+	remote.status = RUN;					 // Default state
 
 	return;
 
@@ -35,8 +37,13 @@ void remote_init(void)
 void remote_process(void)
 {
 
-	uint16_t adcRawData[2] = {0};	// Reset value
+	uint8_t mode = 0;
+	uint8_t angle = 0;
+	uint8_t speed = 0;
 	uint8_t dataPck = ERROR;		// Error by default
+
+	uint16_t adcRawData[2] = {0};	// Reset value
+
 
 
 	// 1. Read data from adc
@@ -63,13 +70,17 @@ void remote_process(void)
 
 		// 2. Convert raw data into engineering values
 
-		uint8_t mode = MODE_NORM;						// For now only normal mode available
-		uint8_t angle = U16_TO_ANGLE(adcRawData[0]);
-		uint8_t speed = U16_TO_SPEED(adcRawData[1]);
+		mode = MODE_NORM;						// For now only normal mode available
+		angle = U16_TO_ANGLE(adcRawData[0]);
+		speed = U16_TO_SPEED(adcRawData[1]);
 
 		// 3. Encrypt data into 8-bit packet format
 
 		dataPck = GEN_PACKET(mode, angle, speed);
+
+		// If in STOP mode evaluate to switch in RUN mode (do not go into STOP mode here if you already are not in)
+		if(remote.status == STOP)
+			remote.status = REMOTE_STATUS(angle, speed);
 
 	}
 
@@ -83,7 +94,15 @@ void remote_process(void)
 
 	// 5. Time elapsed; send the data packet
 
-	HAL_UART_Transmit(&huart3, &remote.data, 1, HAL_MAX_DELAY);
+	// Save energy; if in stop I don't send data (no problem in case of missing data; missed send will considered a STOP condition also)
+	if(remote.status == RUN)
+		// Send data
+		HAL_UART_Transmit(&huart3, &remote.data, 1, HAL_MAX_DELAY);
+
+
+	// Evaluating possible STOP condition in order to avoid successive sending of data
+	remote.status = REMOTE_STATUS(angle, speed);
+
 
 }
 

@@ -31,6 +31,16 @@
 
 //
 
+#define REMOTE_STATUS(angle, speed)		( !( angle == 0 ) || !( ( speed >= 13 ) && ( speed <= 18 ) ) ) ? RUN : STOP
+
+
+typedef enum
+{
+
+	STOP = 0,
+	RUN = 1
+
+}REMOTE_STATUS;
 
 typedef struct
 {
@@ -38,6 +48,7 @@ typedef struct
 	uint32_t send_timeStamp;
 	uint8_t data;
 	uint8_t send;
+	REMOTE_STATUS status;
 
 }remoteStruct;
 
