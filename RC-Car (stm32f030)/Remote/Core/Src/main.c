@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "remote.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,7 +59,7 @@ static void MX_USART3_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint16_t adcRaw[2] = {0};
+
 /* USER CODE END 0 */
 
 /**
@@ -93,7 +93,7 @@ int main(void)
   MX_ADC_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  remote_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -101,24 +101,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_ADC_Start(&hadc);
 
-	  HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
-	  adcRaw[0] = HAL_ADC_GetValue(&hadc);
-	  HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
-	  adcRaw[1] = HAL_ADC_GetValue(&hadc);
+	  remote_process();
 
-	  uint8_t sendByte = 0;
-
-	  sendByte = ( (float)adcRaw[0] / 4096.0 )*100;
-	  HAL_UART_Transmit(&huart3, &sendByte, 1, HAL_MAX_DELAY);
-
-	  HAL_Delay(500);
-
-	  sendByte = ( (float)adcRaw[1] / 4096.0 )*100+100;
-	  HAL_UART_Transmit(&huart3, &sendByte, 1, HAL_MAX_DELAY);
-
-	  HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
