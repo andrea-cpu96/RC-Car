@@ -11,7 +11,7 @@
 
 
 /* Private function prototypes */
-uint16_t getSingleVal(void);
+static uint16_t getSingleVal(void);
 /*******************************/
 
 /* Global Variable */
@@ -113,7 +113,7 @@ void remote_process(void)
 
 /************************** PRIVATE FUNCTION *******************************/
 
-uint16_t getSingleVal(void)
+static uint16_t getSingleVal(void)
 {
 
 	uint8_t errorFlag = 0;

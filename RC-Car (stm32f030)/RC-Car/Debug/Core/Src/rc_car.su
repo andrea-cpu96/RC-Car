@@ -1,0 +1,12 @@
+../Core/Src/rc_car.c:27:6:rc_car_init	8	static
+../Core/Src/rc_car.c:51:6:rc_car_process	8	static
+../Core/Src/rc_car.c:160:13:motors_handler	16	static
+../Core/Src/rc_car.c:185:13:stopCondition	8	static
+../Core/Src/rc_car.c:202:13:direction_control	8	static
+../Core/Src/rc_car.c:215:13:angle_control	8	static
+../Core/Src/rc_car.c:224:13:speed_control	8	static
+../Core/Src/rc_car.c:233:13:unpackedData	8	static
+../Core/Src/rc_car.c:270:13:setForward	8	static
+../Core/Src/rc_car.c:279:13:setBackward	8	static
+../Core/Src/rc_car.c:288:13:setStop	8	static
+../Core/Src/rc_car.c:303:6:HAL_UART_RxCpltCallback	16	static
