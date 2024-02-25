@@ -28,14 +28,22 @@
 #define FORWARD_BORDER					19	// Value of speed; 19-31
 #define BACKWARD_BORDER					12	// Value of speed; 0-12
 
-#define SPEED_ZERO_VAL					0xff
 
-#define ANGLE_STRAIGHT					0
-#define ANGLE_TURN_LEFT					1
-#define ANGLE_TURN_RIGHT 				2
+#define ANGLE_STRAIGHT					1
+#define ANGLE_TURN_LEFT					2
+#define ANGLE_TURN_RIGHT 				0
 
-#define SPEED_SLOWEST					0
-#define SPEED_FASTEST 					12
+#define SM1_DEFAULT						( ( ( 0 / 18.0 ) + 2 ) / 100.0 );
+#define SM1_TURN						( ( ( 120 / 18.0 ) + 2 ) / 100.0 );
+#define SM2_DEFAULT						( ( ( 150 / 18.0 ) + 2 ) / 100.0 );
+#define SM2_TURN						( ( ( 50 / 18.0 ) + 2 ) / 100.0 );
+
+#define SPEED_SLOWEST					0.0
+#define SPEED_FASTEST 					12.0
+
+#define MAX_DUTY						70.0
+#define SPEED_TO_DUTY(speed)			( ( ( (float)speed / SPEED_FASTEST ) * MAX_DUTY ) / 100.0 )
+
 
 enum DIRECTION
 {

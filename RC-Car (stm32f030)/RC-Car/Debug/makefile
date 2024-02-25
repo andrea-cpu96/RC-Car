@@ -60,8 +60,8 @@ all: main-build
 main-build: RC-Car.elf secondary-outputs
 
 # Tool invocations
-RC-Car.elf RC-Car.map: $(OBJS) $(USER_OBJS) C:\Users\Fato\Desktop\Nuova\ cartella\RC-Car\RC-Car\ (stm32f030)\RC-Car\STM32F030CCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "RC-Car.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\Fato\Desktop\Nuova cartella\RC-Car\RC-Car (stm32f030)\RC-Car\STM32F030CCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RC-Car.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+RC-Car.elf RC-Car.map: $(OBJS) $(USER_OBJS) D:\Andrea\Embedded\Repositories\RC-Car\RC-Car\ (stm32f030)\RC-Car\STM32F030CCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "RC-Car.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"D:\Andrea\Embedded\Repositories\RC-Car\RC-Car (stm32f030)\RC-Car\STM32F030CCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RC-Car.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

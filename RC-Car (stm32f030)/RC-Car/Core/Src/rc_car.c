@@ -36,6 +36,11 @@ void rc_car_init(void)
 
 	rcCar.status = STOP;	// Start in STOP and wait for new command
 
+	// Enable peripherals
+	HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim15, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+
 	// Start with a stop condition
 	stopCondition();
 
@@ -136,14 +141,14 @@ void rc_car_process(void)
 
 					// Stop motors and go into STOP mode
 					stopCondition();
-					rcCar.mode = STOP;
+					rcCar.status = STOP;
 
 				}
 				else
 				{
 
 					// Stay into RUN mode
-					rcCar.mode = RUN;
+					rcCar.status = RUN;
 
 				}
 
@@ -192,7 +197,11 @@ static void stopCondition(void)
 	rcCar.angle = ANGLE_STRAIGHT;
 	rcCar.speed = SPEED_SLOWEST;
 
-	motors_handler();
+	//motors_handler();
+
+	angle_control();
+	direction_control();
+	speed_control();
 
 	return;
 
@@ -215,8 +224,34 @@ static void direction_control(void)
 static void angle_control(void)
 {
 
+	  float sm1 = SM1_DEFAULT;
+	  float sm2 = SM2_DEFAULT;
 
+	  if(rcCar.angle == ANGLE_TURN_RIGHT )
+	  {
 
+		  // Turn right
+		  sm1 = SM1_TURN;
+		  sm2 = SM2_DEFAULT;
+
+	  }
+	  else if(rcCar.angle == ANGLE_TURN_LEFT)
+	  {
+
+		  // Turn left
+		  sm1 = SM1_DEFAULT;
+		  sm2 = SM2_TURN;
+
+	  }
+	  else
+	  {
+
+		  // Straight
+
+	  }
+
+	  __HAL_TIM_SET_COMPARE(&htim15, TIM_CHANNEL_1, ( sm1 * htim15.Init.Period ));
+	  __HAL_TIM_SET_COMPARE(&htim15, TIM_CHANNEL_2, ( sm2 * htim15.Init.Period ));
 
 }
 
@@ -224,8 +259,12 @@ static void angle_control(void)
 static void speed_control(void)
 {
 
+	float duty_perc = 0;
+
+	duty_perc = SPEED_TO_DUTY(rcCar.speed);
 
 
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, ( duty_perc * htim3.Init.Period ));
 
 }
 
@@ -252,7 +291,7 @@ static void unpackedData(void)
 		rcCar.direction = BACKWARD;
 
 		// Normalize speed for 13 values
-		rcCar.speed = FORWARD_BORDER - rcCar.speed;		// 0-12
+		rcCar.speed = BACKWARD_BORDER - rcCar.speed;		// 0-12
 
 	}
 	else
@@ -260,7 +299,7 @@ static void unpackedData(void)
 
 		rcCar.direction = NONE;
 
-		rcCar.speed = SPEED_ZERO_VAL;
+		rcCar.speed = SPEED_SLOWEST;
 
 	}
 

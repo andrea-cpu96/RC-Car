@@ -44,9 +44,13 @@ void remote_process(void)
 
 	uint16_t adcRawData[2] = {0};	// Reset value
 
+	HAL_Delay(200);
 
 
 	// 1. Read data from adc
+
+	// Start reading
+	HAL_ADC_Start(&hadc);
 
 	// Read first channel
 	adcRawData[0] = getSingleVal();
@@ -71,8 +75,8 @@ void remote_process(void)
 		// 2. Convert raw data into engineering values
 
 		mode = MODE_NORM;						// For now only normal mode available
-		angle = U16_TO_ANGLE(adcRawData[0]);
-		speed = U16_TO_SPEED(adcRawData[1]);
+		angle = U16_TO_ANGLE(adcRawData[1]);
+		speed = U16_TO_SPEED(adcRawData[0]);
 
 		// 3. Encrypt data into 8-bit packet format
 
@@ -118,9 +122,6 @@ static uint16_t getSingleVal(void)
 
 	uint8_t errorFlag = 0;
 
-
-	// Start reading
-	errorFlag |= HAL_ADC_Start(&hadc);
 
 	// Wait until the conversion is done
 	errorFlag |= HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);

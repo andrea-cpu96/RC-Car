@@ -9,7 +9,7 @@
 #define INC_REMOTE_H_
 
 
-#define SENDING_TIME			100		// 100[ms] between every new data
+#define SENDING_TIME			200		// 100[ms] between every new data
 
 #define SEND_OK					0
 #define SEND_ERROR				1
@@ -25,13 +25,13 @@
 #define SPEED_QUANT				31		// 0-12->backward ; 13-18->stop ; 19-31->forward
 
 #define U16_TO_ANGLE(data)		( ( (float)data / 4096.0 ) * ANGLE_QUANT )
-#define U16_TO_SPEED(data)      ( ( (float)data / 4096.0 ) * SPEED_QUANT )
+#define U16_TO_SPEED(data)      ( ( ( 1.0 - (float)data / 4096.0 ) ) * SPEED_QUANT )
 
-#define GEN_PACKET(pck77, pck65, pck40)		(  ( pck77 << 7 ) | ( pck65 << 6 ) | ( pck40 << 4 )  )
+#define GEN_PACKET(pck77, pck65, pck40)		(  ( pck77 << 7 ) | ( pck65 << 5 ) | ( pck40 )  )
 
 //
 
-#define REMOTE_STATUS(angle, speed)		( !( angle == 0 ) || !( ( speed >= 13 ) && ( speed <= 18 ) ) ) ? RUN : STOP
+#define REMOTE_STATUS(angle, speed)		( !( angle == 1 ) || !( ( speed >= 13 ) && ( speed <= 18 ) ) ) ? RUN : STOP
 
 
 typedef enum
