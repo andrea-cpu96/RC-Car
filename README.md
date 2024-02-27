@@ -2,12 +2,6 @@
 I created this repository in order to contain all the code and documentations for the project of a full customized RC car.
 
 
-HARDWARE KNOWN BUGS TO BE FIXED
-
-- LoRa traceses and connector pinout must be in the reverse order 
-- The LoRa traces of RX and TX in the connector must be exchanged 
-
-
 FIRMWARE NOTES 
 
 - the data-packed is of eight bits; 1 for mode, 2 for steering angle and 5 for speed and direction. 
@@ -23,7 +17,6 @@ Conclusion
 
 *** NEXT UPDATES ***
 
-- correction of the hardware bugs
 - documentation 
 - 3d printed case (maybe)
 - turbo mode (maybe)
