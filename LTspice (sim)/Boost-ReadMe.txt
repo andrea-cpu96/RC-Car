@@ -17,3 +17,8 @@ BOOST CONVERTER
    (probabilmente il caso peggiore è il duty-cycle più basso).
    Oltre a questo c'è da considerare il rendimento che non è max duqnue potenza maggiore in ingresso a parità di uscita, dunque considerare
    una percentuale in più nella corrente su L. 
+
+
+* Ho scelto 20kHz come frequenza di switching. Frequenze piú basse rischiano di portare il boost in discontinuous mode, mentre frequenze piú       
+  alte limitano il duty cycle max in quanto l'amplificatore operazionale usato come driver non riesce a seguire lo slew rate e perde us di Ton 
+  che diventano importanti a alte frequenze.   
